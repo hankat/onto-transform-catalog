@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog of Transformation Patterns</title>
+    <link rel="stylesheet" href="styles/style-main.css">
+</head>
+
+<body>
+    <nav class="top-nav">
+        <div class="nav-container">
+
+            <a href="#home" class="nav-logo">Transformation Patterns</a>
+
+            <button class="hamburger-btn" id="mobile-toggle">
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#pattern">PatOMat2</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <header class="header-with-bg">
+        <div class="header-content">
+            <p>Welcome at</p>
+            <h1 class="header-title">Catalog of Transformation Patterns</h1>
+            <p>Transform your knowlege graph or ontology.</p>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="patterns-grid">
+            <div class="pattern-card">
+                <h3>CHASH</h3>
+                <p>CHain of properties SHortcut.</p>
+                <a href="patterns/chash.html" class="cta-button">More details</a>
+            </div>
+
+            <div class="pattern-card">
+                <h3>CAT</h3>
+                <p>Class by ATtribute value.</p>
+                <a href="#" class="cta-button">More details</a>
+            </div>
+
+            <div class="pattern-card">
+                <h3>COPR</h3>
+                <p>Link COunting Property.</p>
+                <a href="#" class="cta-button">More details</a>
+            </div>
+
+            <div class="pattern-card">
+                <h3>DERE</h3>
+                <p>Relationship DEREification.</p>
+                <a href="#" class="cta-button">More details</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        const toggle = document.getElementById('mobile-toggle');
+        const menu = document.querySelector('.nav-menu');
+
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    </script>
+    <footer
+        style="background: var(--primary-white); border-top: 1px solid var(--border-gray); padding: 2rem; text-align: center; font-size: 0.85rem; color: #666;">
+        <p>&copy; 2026 Catalog of Transformation Pattern, Prague University of Economics and Business.</p>
+        <p>All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

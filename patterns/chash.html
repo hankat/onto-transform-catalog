@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog of Transformation Patterns</title>
+    <link rel="stylesheet" href="../styles/style-pattern.css">
+</head>
+
+<body>
+    <nav class="top-nav">
+        <div class="nav-container">
+
+            <a href="../index.html" class="nav-logo">Transformation Patterns</a>
+
+            <button class="hamburger-btn" id="sidebar-toggle" aria-label="Toggle Sidebar">
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+
+
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <div class="docs-wrapper">
+
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-group">
+                    <h3>Catalog</h3>
+                    <ul>
+                        <li><a href="chash.html" class="active">CHASH (Chain Shortcut)</a></li>
+<!--                         <li><a href="#cat">CAT (Class by Attribute)</a></li>
+                        <li><a href="#copr">COPR (Counting Property)</a></li>
+                        <li><a href="#dere">DERE (Dereification)</a></li> -->
+                    </ul>
+                </div>
+
+                <!--                 <div class="nav-group">
+                    <h3>Other Categories</h3>
+                    <ul>
+                        <li><a href="#general">General Guidelines</a></li>
+                        <li><a href="#examples">Integration Examples</a></li>
+                    </ul>
+                </div> -->
+            </nav>
+        </aside>
+
+
+        <main class="docs-content">
+            <header class="content-header">
+                <h1>CHASH</h1>
+
+                <div class="badges-container">
+                    <span class="badge">Transformation Pattern</span>
+                    <span class="badge badge-secondary">Contractive</span>
+                </div>
+            </header>
+
+            <section class="pattern-section">
+                <h2>Description</h2>
+                <p><strong>CHASH</strong> stands for <em>CHain of properties SHortcut</em>. It provides a direct
+                    semantic mapping for shortcutting complex property chains within knowledge graphs or ontologies.</p>
+            </section>
+
+            <section class="pattern-section">
+                <h2>Pattern Visual Diagram TBox</h2>
+                <div class="pattern-image-container">
+                    <img src="../img/chash-tbox.png" alt="CHASH Pattern Diagram" class="pattern-image">
+                    <p class="image-caption">Figure 1: Diagram showing the property chain shortcut at TBox level.</p>
+                </div>
+                <h2>Pattern Visual Diagram ABox</h2>
+                <div class="pattern-image-container">
+                    <img src="../img/chash-abox.png" alt="CHASH Pattern Diagram" class="pattern-image">
+                    <p class="image-caption">Figure 2: Diagram showing the property chain shortcut at ABox level.</p>
+                </div>
+            </section>
+
+            <section class="pattern-section">
+                <h2>Usage</h2>
+                <ul>
+                    <li>
+                        Reduction of number of atoms in relational learning (rules that could not have been discovered
+                        in the full
+                        representation due to search space limitations can be discovered in the compacted
+                        representation)
+                    </li>
+                    <li>More compact visualization</li>
+                    <li>When we do not want to share trade secrets.</li>
+                </ul>
+            </section>
+
+            <section class="pattern-section">
+                <h2>SPARQL Transformation</h2>
+                <h3>Input</h3>
+
+                <pre><code>SELECT ?A ?p ?B ?r ?C
+WHERE {
+    ?p rdfs:domain ?A .
+    ?p rdfs:range ?B .
+    ?r rdfs:domain ?B .
+    ?r rdfs:range ?C . }</code></pre>
+
+                <h3>Output</h3>
+                <pre><code>INSERT DATA {
+    &lt;newProperty&lt; a owl:ObjectProperty ;
+    rdfs:domain &lt;A&gt; ;
+    rdfs:range &lt;C&gt; . }</code></pre>
+            </section>
+        </main>
+    </div>
+
+    <!-- Patka -->
+    <footer class="main-footer">
+        <p>&copy; 2026 Catalog of Transformation Pattern, Prague University of Economics and Business.</p>
+        <p>All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript pro obsluhu responzivního menu -->
+    <script>
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            sidebarToggle.classList.toggle('active');
+        }
+
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // Zavřít sidebar po kliknutí na odkaz na mobilním zařízení
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (sidebar.classList.contains('active')) {
+                    toggleSidebar();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
