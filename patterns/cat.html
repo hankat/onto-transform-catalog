@@ -35,7 +35,19 @@
 
     <div class="docs-wrapper">
 
-        <aside class="sidebar" id="sidebar" data-include="/components/sidebar.html"></aside>
+                <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-group">
+                    <h3>Catalog</h3>
+                    <ul>
+                        <li><a href="chash.html">CHASH (Chain Shortcut)</a></li>
+                        <li><a href="cat.html"  class="active">CAT (Class by Attribute)</a></li>
+                        <li><a href="#copr">COPR (Counting Property)</a></li>
+                        <li><a href="#dere">DERE (Dereification)</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
 
 
         <main class="docs-content">
@@ -108,61 +120,28 @@ WHERE {
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const sidebarElement = document.getElementById('sidebar');
-            const file = sidebarElement.getAttribute('data-include');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
 
-            if (file) {
-                try {
-                    const response = await fetch(file);
-                    if (response.ok) {
-                        sidebarElement.innerHTML = await response.text();
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            sidebarToggle.classList.toggle('active');
+        }
 
-                        // Zvýraznění aktivního odkazu podle aktuální stránky
-                        highlightActiveLink();
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
 
-                        // Inicializace událostí pro zavírání na mobilu
-                        initSidebarEvents();
-                    }
-                } catch (err) {
-                    console.error('Chyba při načítání sidebaru:', err);
+        // Zavřít sidebar po kliknutí na odkaz na mobilním zařízení
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (sidebar.classList.contains('active')) {
+                    toggleSidebar();
                 }
-            }
+            });
         });
-
-        function highlightActiveLink() {
-            const currentPage = window.location.pathname.split('/').pop();
-            const links = document.querySelectorAll('.sidebar-nav a');
-            links.forEach(link => {
-                if (link.getAttribute('href') === currentPage) {
-                    link.classList.add('active');
-                }
-            });
-        }
-
-        function initSidebarEvents() {
-            const sidebarToggle = document.getElementById('sidebar-toggle');
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
-
-            function toggleSidebar() {
-                sidebar.classList.toggle('active');
-                overlay.classList.toggle('active');
-                sidebarToggle.classList.toggle('active');
-            }
-
-            sidebarToggle.addEventListener('click', toggleSidebar);
-            overlay.addEventListener('click', toggleSidebar);
-
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (sidebar.classList.contains('active')) {
-                        toggleSidebar();
-                    }
-                });
-            });
-        }
     </script>
 </body>
 
