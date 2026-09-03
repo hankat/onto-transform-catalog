@@ -185,7 +185,6 @@ body {
 
 .badges-container {
     display: flex;
-    flex-direction: column; 
     align-items: flex-end;  
     gap: 0.4rem;            
 }
@@ -203,6 +202,11 @@ body {
 .badge-secondary {
     background-color: #f1f5f9;
     color: #475569;
+}
+
+.badge-primary {
+    background-color: #d2fde0;
+    color: #104c24;
 }
 
 .badge-success {

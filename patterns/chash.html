@@ -35,27 +35,7 @@
 
     <div class="docs-wrapper">
 
-        <aside class="sidebar" id="sidebar">
-            <nav class="sidebar-nav">
-                <div class="nav-group">
-                    <h3>Catalog</h3>
-                    <ul>
-                        <li><a href="chash.html" class="active">CHASH (Chain Shortcut)</a></li>
-<!--                         <li><a href="#cat">CAT (Class by Attribute)</a></li>
-                        <li><a href="#copr">COPR (Counting Property)</a></li>
-                        <li><a href="#dere">DERE (Dereification)</a></li> -->
-                    </ul>
-                </div>
-
-                <!--                 <div class="nav-group">
-                    <h3>Other Categories</h3>
-                    <ul>
-                        <li><a href="#general">General Guidelines</a></li>
-                        <li><a href="#examples">Integration Examples</a></li>
-                    </ul>
-                </div> -->
-            </nav>
-        </aside>
+    <aside class="sidebar" id="sidebar" data-include="../components/sidebar.html"></aside>
 
 
         <main class="docs-content">
@@ -64,7 +44,9 @@
 
                 <div class="badges-container">
                     <span class="badge">Transformation Pattern</span>
-                    <span class="badge badge-secondary">Contractive</span>
+                    <span class="badge badge-primary">ABox</span>
+                    <span class="badge badge-primary">TBox</span>
+                    <span class="badge badge-secondary">Contractive</span>                    
                 </div>
             </header>
 
@@ -114,7 +96,7 @@ WHERE {
 
                 <h3>Output</h3>
                 <pre><code>INSERT DATA {
-    &lt;newProperty&lt; a owl:ObjectProperty ;
+    &lt;newProperty&gt; a owl:ObjectProperty ;
     rdfs:domain &lt;A&gt; ;
     rdfs:range &lt;C&gt; . }</code></pre>
             </section>
@@ -127,30 +109,62 @@ WHERE {
         <p>All rights reserved.</p>
     </footer>
 
-    <!-- JavaScript pro obsluhu responzivního menu -->
     <script>
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebar-overlay');
-        const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+        document.addEventListener('DOMContentLoaded', async () => {
+            const sidebarElement = document.getElementById('sidebar');
+            const file = sidebarElement.getAttribute('data-include');
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-            sidebarToggle.classList.toggle('active');
-        }
+            if (file) {
+                try {
+                    const response = await fetch(file);
+                    if (response.ok) {
+                        sidebarElement.innerHTML = await response.text();
+                        
+                        // Zvýraznění aktivního odkazu podle aktuální stránky
+                        highlightActiveLink();
+                        
+                        // Inicializace událostí pro zavírání na mobilu
+                        initSidebarEvents();
+                    }
+                } catch (err) {
+                    console.error('Chyba při načítání sidebaru:', err);
+                }
+            }
+        });
 
-        sidebarToggle.addEventListener('click', toggleSidebar);
-        overlay.addEventListener('click', toggleSidebar);
-
-        // Zavřít sidebar po kliknutí na odkaz na mobilním zařízení
-        sidebarLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if (sidebar.classList.contains('active')) {
-                    toggleSidebar();
+        function highlightActiveLink() {
+            const currentPage = window.location.pathname.split('/').pop();
+            const links = document.querySelectorAll('.sidebar-nav a');
+            links.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
                 }
             });
-        });
+        }
+
+        function initSidebarEvents() {
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+
+            function toggleSidebar() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                sidebarToggle.classList.toggle('active');
+            }
+
+            sidebarToggle.addEventListener('click', toggleSidebar);
+            overlay.addEventListener('click', toggleSidebar);
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (sidebar.classList.contains('active')) {
+                        toggleSidebar();
+                    }
+                });
+            });
+        }
     </script>
 </body>
 
