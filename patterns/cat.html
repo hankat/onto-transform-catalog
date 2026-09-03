@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog of Transformation Patterns</title>
+    <link rel="stylesheet" href="../styles/style-pattern.css">
+</head>
+
+<body>
+    <nav class="top-nav">
+        <div class="nav-container">
+
+            <a href="../index.html" class="nav-logo">Transformation Patterns</a>
+
+            <button class="hamburger-btn" id="sidebar-toggle" aria-label="Toggle Sidebar">
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+
+
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <div class="docs-wrapper">
+
+        <aside class="sidebar" id="sidebar" data-include="../components/sidebar.html"></aside>
+
+
+        <main class="docs-content">
+            <header class="content-header">
+                <h1>CAT</h1>
+
+                <div class="badges-container">
+                    <span class="badge">Transformation Pattern</span>
+                    <span class="badge badge-primary">ABox</span>
+                    <span class="badge badge-primary">TBox</span>
+                    <span class="badge badge-secondary">Contractive</span>
+                </div>
+            </header>
+
+            <section class="pattern-section">
+                <h2>Description</h2>
+                <p><strong>CAT</strong> stands for <em>Class by Attribute Type</em>.</p>
+                <p>Objects whose values for a certain
+                    property is instance of a particular class (that is just a subclass of the range of the property)
+                    become instances of a new class (subclass of their original class). </p>
+            </section>
+
+            <section class="pattern-section">
+                <h2>Pattern Visual Diagram TBox</h2>
+                <div class="pattern-image-container">
+                    <img src="../img/cat-tbox.png" alt="CAT Pattern Diagram" class="pattern-image">
+                    <p class="image-caption">Figure 1: Diagram showing the CAT at TBox level.</p>
+                </div>
+                <h2>Pattern Visual Diagram ABox</h2>
+                <div class="pattern-image-container">
+                    <img src="../img/cat-abox.png" alt="CAT Pattern Diagram" class="pattern-image">
+                    <p class="image-caption">Figure 2: Diagram showing the CAT at ABox level.</p>
+                </div>
+            </section>
+
+            <section class="pattern-section">
+                <h2>Usage</h2>
+                <ul>
+                    <li>Construction of an extensive explicit taxonomy from implicit subconcepts (cf. research on
+                        focused
+                        categorization power, <a href="https://journals.sagepub.com/doi/pdf/10.3233/SW-233401">Svátek et
+                            al.</a>, Section 4.3 and 9.2)</li>
+                    <li>More compact visualization</li>
+                </ul>
+            </section>
+
+            <section class="pattern-section">
+                <h2>SPARQL Transformation</h2>
+                <h3>Input</h3>
+
+                <pre><code>SELECT DISTINCT ?A ?p ?B ?C
+WHERE { 
+  ?p rdfs:domain ?A .
+  ?p rdfs:range ?B .
+  ?C rdfs:subClassOf ?B 
+}</code></pre>
+
+                <h3>Output</h3>
+                <pre><code>INSERT DATA{
+        &lt;newClass&gt; a rdfs:Class ;
+        rdfs:subClassOf &lt;A&gt; . }</code></pre>
+            </section>
+        </main>
+    </div>
+
+    <!-- Patka -->
+    <footer class="main-footer">
+        <p>&copy; 2026 Catalog of Transformation Pattern, Prague University of Economics and Business.</p>
+        <p>All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const sidebarElement = document.getElementById('sidebar');
+            const file = sidebarElement.getAttribute('data-include');
+
+            if (file) {
+                try {
+                    const response = await fetch(file);
+                    if (response.ok) {
+                        sidebarElement.innerHTML = await response.text();
+
+                        // Zvýraznění aktivního odkazu podle aktuální stránky
+                        highlightActiveLink();
+
+                        // Inicializace událostí pro zavírání na mobilu
+                        initSidebarEvents();
+                    }
+                } catch (err) {
+                    console.error('Chyba při načítání sidebaru:', err);
+                }
+            }
+        });
+
+        function highlightActiveLink() {
+            const currentPage = window.location.pathname.split('/').pop();
+            const links = document.querySelectorAll('.sidebar-nav a');
+            links.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function initSidebarEvents() {
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+
+            function toggleSidebar() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                sidebarToggle.classList.toggle('active');
+            }
+
+            sidebarToggle.addEventListener('click', toggleSidebar);
+            overlay.addEventListener('click', toggleSidebar);
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (sidebar.classList.contains('active')) {
+                        toggleSidebar();
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
