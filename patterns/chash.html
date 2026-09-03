@@ -35,7 +35,7 @@
 
     <div class="docs-wrapper">
 
-    <aside class="sidebar" id="sidebar" data-include="/components/sidebar.html"></aside>
+        <aside class="sidebar" id="sidebar" data-include="/components/sidebar.html"></aside>
 
 
         <main class="docs-content">
@@ -46,7 +46,7 @@
                     <span class="badge">Transformation Pattern</span>
                     <span class="badge badge-primary">ABox</span>
                     <span class="badge badge-primary">TBox</span>
-                    <span class="badge badge-secondary">Contractive</span>                    
+                    <span class="badge badge-secondary">Contractive</span>
                 </div>
             </header>
 
@@ -119,10 +119,10 @@ WHERE {
                     const response = await fetch(file);
                     if (response.ok) {
                         sidebarElement.innerHTML = await response.text();
-                        
+
                         // Zvýraznění aktivního odkazu podle aktuální stránky
                         highlightActiveLink();
-                        
+
                         // Inicializace událostí pro zavírání na mobilu
                         initSidebarEvents();
                     }
@@ -133,11 +133,23 @@ WHERE {
         });
 
         function highlightActiveLink() {
+            // Získáme název aktuálního souboru (např. "chash.html")
             const currentPage = window.location.pathname.split('/').pop();
             const links = document.querySelectorAll('.sidebar-nav a');
+
             links.forEach(link => {
-                if (link.getAttribute('href') === currentPage) {
+                // Získáme hodnota atributu href
+                const href = link.getAttribute('href');
+                if (!href) return;
+
+                // Vytáhneme pouze název souboru z odkazu (ignorueme složky i úvodní lomítka)
+                const linkPage = href.split('/').pop();
+
+                // Porovnáme pouze názvy souborů
+                if (linkPage === currentPage && currentPage !== "") {
                     link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
                 }
             });
         }
